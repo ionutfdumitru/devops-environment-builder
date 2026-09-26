@@ -9,7 +9,7 @@ __pycache__/
 .terraform/
 *.tfstate
 *.tfstate.*
-.terraform.lock.hcl
+*.tfvars
 
 # Secrete si configuratii locale
 .env
