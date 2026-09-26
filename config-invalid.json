@@ -1,0 +1,12 @@
+{
+  "technologies": [
+    {
+      "name": "python",
+      "version": "99"
+    },
+    {
+      "name": "mysql",
+      "version": "latest"
+    }
+  ]
+}

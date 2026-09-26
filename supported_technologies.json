@@ -1,0 +1,26 @@
+{
+  "docker": {
+    "valid_versions": ["latest"],
+    "package": "docker.io",
+    "command": "docker",
+    "version_argument": "--version"
+  },
+  "python": {
+    "valid_versions": ["3"],
+    "package": "python3",
+    "command": "python3",
+    "version_argument": "--version"
+  },
+  "git": {
+    "valid_versions": ["latest"],
+    "package": "git",
+    "command": "git",
+    "version_argument": "--version"
+  },
+  "nginx": {
+    "valid_versions": ["latest"],
+    "package": "nginx",
+    "command": "nginx",
+    "version_argument": "-v"
+  }
+}

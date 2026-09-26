@@ -1,0 +1,20 @@
+# Fisiere generate de validator
+generated/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Fisiere locale Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Secrete si configuratii locale
+.env
+*.pem
+*.key
+
+# Configuratia editorului
+.vscode/

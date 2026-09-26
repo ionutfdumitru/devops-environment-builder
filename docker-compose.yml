@@ -1,0 +1,15 @@
+services:
+  validator:
+    build:
+      context: .
+    image: devops-environment-validator:local
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./generated:/app/generated
+
+
+
+#  construieste imaginea folosind Dockerfile
+#  monteaza configuratia ca read-only
+#  monteaza directorul rezultat
+#  porneste validatorul prin ENTRYPOINT din Dockerfile
