@@ -3,24 +3,28 @@
     "valid_versions": ["latest"],
     "package": "docker.io",
     "command": "docker",
-    "version_argument": "--version"
+    "version_argument": "--version",
+    "service": "docker"
   },
   "python": {
     "valid_versions": ["3"],
     "package": "python3",
     "command": "python3",
-    "version_argument": "--version"
+    "version_argument": "--version",
+    "service": null
   },
   "git": {
     "valid_versions": ["latest"],
     "package": "git",
     "command": "git",
-    "version_argument": "--version"
+    "version_argument": "--version",
+    "service": null
   },
   "nginx": {
     "valid_versions": ["latest"],
     "package": "nginx",
     "command": "nginx",
-    "version_argument": "-v"
+    "version_argument": "-v",
+    "service": "nginx"
   }
 }

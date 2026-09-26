@@ -18,3 +18,6 @@ __pycache__/
 
 # Configuratia editorului
 .vscode/
+
+# Inventory local cu IP si cale SSH
+ansible/inventory.yml

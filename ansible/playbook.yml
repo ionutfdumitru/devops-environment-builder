@@ -1,0 +1,85 @@
+
+# vars_files citeste rezultatul validatorului
+# apt instaleaza numai pachetele din requested_technologies
+# serviciile sunt pornite numai cand service nu este null
+# utilizatorul remote este adaugat in grupul Docker numai daca Docker a fost cerut
+# toate task-urile folosesc become: true, pentru sudo
+
+---
+- name: Configure Environment Builder server
+  hosts: aws
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - ../generated/generated_vars.json
+
+  tasks:
+    - name: Update APT package cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install requested technologies
+      ansible.builtin.apt:
+        name: "{{ item.package }}"
+        state: present
+      loop: "{{ requested_technologies }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Enable and start requested services
+      ansible.builtin.service:
+        name: "{{ item.service }}"
+        state: started
+        enabled: true
+      loop: "{{ requested_technologies }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: item.service is not none
+
+    - name: Add remote user to Docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+      when: "'docker' in requested_technologies | map(attribute='name') | list"
+
+
+
+#1. creeaza un director pe EC2;
+#2. copiaza variabilele generate;
+#3. copiaza scriptul Bash;
+#4. ruleaza verificarea dupa instalare;
+#5. afiseaza rezultatul in logul Ansible/Jenkins.#
+#6. Daca scriptul Bash returneaza 1, task-ul Ansible esueaza si pipeline-ul se opreste.
+    
+    - name: Create verification directory
+      ansible.builtin.file:
+        path: /opt/environment-builder
+        state: directory
+        mode: "0755"
+
+    - name: Copy generated variables to server
+      ansible.builtin.copy:
+        src: ../generated/generated_vars.json
+        dest: /opt/environment-builder/generated_vars.json
+        mode: "0644"
+
+    - name: Copy verification script to server
+      ansible.builtin.copy:
+        src: ../scripts/verify_environment.sh
+        dest: /opt/environment-builder/verify_environment.sh
+        mode: "0755"
+
+    - name: Verify installed technologies
+      ansible.builtin.command:
+        argv:
+          - /opt/environment-builder/verify_environment.sh
+          - /opt/environment-builder/generated_vars.json
+      register: verification_result
+      changed_when: false
+
+    - name: Display verification result
+      ansible.builtin.debug:
+        var: verification_result.stdout_lines

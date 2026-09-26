@@ -105,7 +105,8 @@ def build_generated_variables(config, supported):
                 "version": version,
                 "package": details["package"],
                 "command": details["command"],
-                "version_argument": details["version_argument"]
+                "version_argument": details["version_argument"],
+                "service": details["service"]
             }
         )
 
