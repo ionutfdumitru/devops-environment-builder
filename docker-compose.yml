@@ -2,14 +2,15 @@ services:
   validator:
     build:
       context: .
-    image: devops-environment-validator:local
+    image: mufarin/devops-environment-validator:latest
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     volumes:
       - ./config.json:/app/config.json:ro
       - ./generated:/app/generated
 
 
-
-#  construieste imaginea folosind Dockerfile
-#  monteaza configuratia ca read-only
-#  monteaza directorul rezultat
-#  porneste validatorul prin ENTRYPOINT din Dockerfile
+#build: context: . indica modul in care imaginea poate fi construita din Dockerfile
+#construirea efectiva are loc prin docker compose build
+#:ro monteaza configuratia numai pentru citire
+#./generated:/app/generated permite salvarea rezultatului pe host
+#ENTRYPOINT din Dockerfile porneste automat validator.py
