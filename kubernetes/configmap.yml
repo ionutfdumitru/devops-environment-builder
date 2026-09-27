@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: environment-builder-config
+data:
+  config.json: |
+    {
+      "technologies": [
+        {
+          "name": "docker",
+          "version": "latest"
+        },
+        {
+          "name": "python",
+          "version": "3"
+        },
+        {
+          "name": "git",
+          "version": "latest"
+        },
+        {
+          "name": "nginx",
+          "version": "latest"
+        }
+      ]
+    }

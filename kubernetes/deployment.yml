@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: environment-builder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: environment-builder
+  template:
+    metadata:
+      labels:
+        app: environment-builder
+    spec:
+      initContainers:
+        - name: validator
+          image: mufarin/devops-environment-validator:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: configuration
+              mountPath: /app/config.json
+              subPath: config.json
+              readOnly: true
+            - name: generated
+              mountPath: /app/generated
+
+      containers:
+        - name: result-server
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: generated
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+
+      volumes:
+        - name: configuration
+          configMap:
+            name: environment-builder-config
+        - name: generated
+          emptyDir: {}
